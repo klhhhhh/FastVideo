@@ -11,10 +11,10 @@ method:
 
 training:
   distributed:
-    num_gpus: 8
+    num_gpus: 2
     sp_size: 1
     tp_size: 1
-    hsdp_replicate_dim: 8
+    hsdp_replicate_dim: 2
     hsdp_shard_dim: 1
 
   data:
@@ -51,6 +51,8 @@ training:
 
   model:
     enable_gradient_checkpointing_type: full
+    enable_activation_offloading: true
+    activation_offloading_min_tensor_size_mb: 1
 
 callbacks:
   grad_clip:

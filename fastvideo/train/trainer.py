@@ -14,6 +14,7 @@ from fastvideo.distributed import get_sp_group, get_world_group
 from fastvideo.train.callbacks.callback import CallbackDict
 from fastvideo.train.methods.base import TrainingMethod
 from fastvideo.train.utils.tracking import build_tracker
+from fastvideo.train.utils.activation_offloading import activation_offload_context
 
 if TYPE_CHECKING:
     from fastvideo.train.utils.training_config import (
