@@ -101,6 +101,7 @@ failing test's output.
 | Inference Tests VMoBA | `inference_vmoba` | 15 min |
 | Performance Tests | `performance` | 30 min |
 | API Server Tests | `api_server` | 30 min |
+| Train Framework Tests | `train_framework` | 30 min |
 
 If a Full Suite test fails, check the Buildkite build log for the failing step's output.
 Fix the regression, push, and comment `/merge` again to re-trigger.
@@ -173,7 +174,7 @@ Applied by Mergify based on which paths you modified. Multiple scope labels can 
 | Label | File paths that trigger it |
 |-------|---------------------------|
 | `scope: training` | `fastvideo/train/`, `fastvideo/training/`, `fastvideo/distillation/`, `examples/train/`, `examples/training/`, `examples/distill/` |
-| `scope: inference` | `fastvideo/pipelines/basic/`, `fastvideo/pipelines/stages/`, `fastvideo/pipelines/samplers/`, `fastvideo/entrypoints/`, `fastvideo/worker/`, `fastvideo/configs/sample/`, `fastvideo/configs/pipelines/`, `examples/inference/` |
+| `scope: inference` | `fastvideo/pipelines/basic/`, `fastvideo/pipelines/stages/`, `fastvideo/pipelines/samplers/`, `fastvideo/entrypoints/`, `fastvideo/worker/`, `fastvideo/api/sampling_param.py`, `fastvideo/configs/pipelines/`, `examples/inference/` |
 | `scope: attention` | `fastvideo/attention/` |
 | `scope: kernel` | `fastvideo-kernel/`, `csrc/` |
 | `scope: data` | `fastvideo/dataset/`, `fastvideo/pipelines/preprocess/`, `examples/preprocessing/` |
@@ -277,6 +278,7 @@ Triggers a specific Buildkite test or suite on the current PR branch.
 | `/test vmoba` | VMoBA inference tests | `inference_vmoba` |
 | `/test performance` | Performance benchmarks | `performance` |
 | `/test api` | API server integration tests | `api_server` |
+| `/test train-framework` | `fastvideo.train` GPU model loading + per-method tests | `train_framework` |
 | `/test full` | Entire Full Suite | all (with `TEST_SCOPE=full`) |
 | `/test fastcheck` | Entire Fastcheck suite | fastcheck (with `TEST_SCOPE=fastcheck`) |
 | `/test pre-commit` | Pre-commit checks on PR code | — (runs `ci-precommit.yml` via `workflow_call`) |

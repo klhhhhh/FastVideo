@@ -283,7 +283,7 @@ class HYWorldImageEncodingStage(ImageEncodingStage):
         return batch
 
 
-class MatrixGameImageEncodingStage(ImageEncodingStage):
+class MatrixGame2ImageEncodingStage(ImageEncodingStage):
     CLIP_MEAN = [0.48145466, 0.4578275, 0.40821073]
     CLIP_STD = [0.26862954, 0.26130258, 0.27577711]
 
@@ -524,6 +524,22 @@ class ImageVAEEncodingStage(PipelineStage):
             image = resize(image, height, width, resize_mode=resize_mode)
             image = pil_to_numpy(image)  # to np
             image = numpy_to_pt(image)  # to pt
+        elif isinstance(image, torch.Tensor):
+            # VideoTransformStage delivers uint8 [0, 255] frames via batch.pil_image
+            # for the I2V preprocessing path. Convert here (not at the source) because
+            # batch.pil_image is also consumed as uint8 by ImageEncodingStage (HF
+            # processor does its own rescale) and by record_schema.py for parquet.
+            if image.dtype == torch.uint8:
+                image = image.float() / 255.0
+            elif not image.dtype.is_floating_point:
+                raise ValueError(f"preprocess() expected uint8 or float tensor, got {image.dtype}")
+            image_min = image.min()
+            image_max = image.max()
+            if image_max > 1.0 + 1e-4 or image_min < -1.0 - 1e-4:
+                raise ValueError("preprocess() expected tensor in [0, 1] or [-1, 1], got "
+                                 f"range [{image_min.item():.3f}, {image_max.item():.3f}]")
+        else:
+            raise TypeError(f"preprocess() expected PIL.Image or torch.Tensor, got {type(image)}")
 
         do_normalize = True
         if image.min() < 0:
@@ -705,7 +721,7 @@ class VideoVAEEncodingStage(ImageVAEEncodingStage):
         return result
 
 
-class MatrixGameImageVAEEncodingStage(ImageVAEEncodingStage):
+class MatrixGame2ImageVAEEncodingStage(ImageVAEEncodingStage):
 
     def forward(
         self,
@@ -799,7 +815,7 @@ class MatrixGameImageVAEEncodingStage(ImageVAEEncodingStage):
                 video_condition = video_condition.to(vae_dtype)
             encoder_output = self.vae.encode(video_condition)
 
-        # MatrixGame uses deterministic VAE encode for the first-frame conditioning.
+        # Matrix-Game 2.0 uses deterministic VAE encode for the first-frame conditioning.
         # Sampling would inject random noise into the cond_concat tensor and destroy the action guidance.
         img_cond = encoder_output.mode()
 
