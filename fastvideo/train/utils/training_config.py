@@ -76,6 +76,9 @@ class ModelTrainingConfig:
     moba_config: dict = field(default_factory=dict)
     enable_gradient_checkpointing_type: str | None = None
 
+    enable_activation_offloading: bool = False
+    activation_offloading_min_tensor_size_mb: int = 1
+
 
 @dataclass(slots=True)
 class TrainingConfig:

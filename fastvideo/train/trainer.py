@@ -140,16 +140,24 @@ class Trainer:
             metric_sums: dict[str, float | torch.Tensor] = {}
             for accum_iter in range(grad_accum):
                 batch = next(data_stream)
-                loss_map, outputs, step_metrics = (method.single_train_step(
-                    batch,
-                    step,
-                ))
+                with activation_offload_context(
+                    enabled=getattr(tc.model, "enable_activation_offloading", False),
+                    min_tensor_size_mb=getattr(
+                        tc.model,
+                        "activation_offloading_min_tensor_size_mb",
+                        1,
+                    ),
+                ):
+                    loss_map, outputs, step_metrics = method.single_train_step(
+                        batch,
+                        step,
+                    )
 
-                method.backward(
-                    loss_map,
-                    outputs,
-                    grad_accum_rounds=grad_accum,
-                )
+                    method.backward(
+                        loss_map,
+                        outputs,
+                        grad_accum_rounds=grad_accum,
+                    )
 
                 for k, v in loss_map.items():
                     if isinstance(v, torch.Tensor):
