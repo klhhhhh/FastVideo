@@ -131,9 +131,11 @@ class RingAttention:
         if original_seq_len is not None:
             local_seq_len = q.shape[1]
             global_seq_len = local_seq_len * get_sp_world_size()
+            if isinstance(original_seq_len, bool) or not isinstance(original_seq_len, int):
+                raise ValueError("original_seq_len must be a positive integer.")
             if not 0 < original_seq_len <= global_seq_len:
-                raise ValueError("original_seq_len must be positive and no larger than the padded SP sequence. "
-                                 f"Got original_seq_len={original_seq_len}, padded_seq_len={global_seq_len}.")
+                raise ValueError("original_seq_len must be within the sequence-parallel transport capacity. "
+                                 f"Got original_seq_len={original_seq_len}, capacity={global_seq_len}.")
 
         if q.dtype not in (torch.float16, torch.bfloat16):
             raise NotImplementedError(
