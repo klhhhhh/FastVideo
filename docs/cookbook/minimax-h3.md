@@ -18,6 +18,8 @@ eight-forward T2VA command](../getting_started/installation/mlx.md#pruned-eight-
 It reads `fastvideo_inference.json` for the trained schedule. The command
 uses native 832x480 resolution and all requested frames.
 
+For dense multi-GPU inference, see [H3 Ring Attention and hybrid USP](../inference/h3-ring-attention.md).
+
 <div class="cookbook-shell cookbook-family-page" data-cookbook data-family="minimax_h3" data-default-recipe="fasth3-preview-cuda" data-recipes="../../assets/cookbook-recipes.json?v=15">
   <header class="cookbook-family-header">
     <a class="cookbook-back-link" href="../"><span aria-hidden="true">←</span> All model families</a>
