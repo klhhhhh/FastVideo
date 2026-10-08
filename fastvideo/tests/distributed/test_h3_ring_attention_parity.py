@@ -27,7 +27,12 @@ def test_h3_ring_matches_full_flash_attention(tmp_path, world_size):
 
 
 def _worker(output):
-    os.environ["FASTVIDEO_ATTENTION_BACKEND"] = "FLASH_ATTN"
+    from fastvideo import envs
+    with envs.FASTVIDEO_ATTENTION_BACKEND.override("FLASH_ATTN"):
+        _worker_with_backend(output)
+
+
+def _worker_with_backend(output):
     from flash_attn import flash_attn_func
     import fastvideo.models.dits.minimax_h3 as h3
     from fastvideo.configs.models.dits.minimax_h3 import MiniMaxH3ArchConfig, MiniMaxH3Config

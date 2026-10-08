@@ -154,12 +154,13 @@ def test_ring_rejects_training():
                                         original_seq_len=7, replicated_q=None, replicated_k=None, replicated_v=None)
 
 
-def test_h3_ring_dispatch_with_compile_graph_break(monkeypatch):
+def test_h3_ring_dispatch_with_compile_graph_break(monkeypatch, env_overrides):
     """Dynamo may compile H3 projections/RoPE while Ring keeps its eager boundary."""
     import fastvideo.attention.ring_attention as ring
     import fastvideo.models.dits.minimax_h3 as h3
-    monkeypatch.setenv("FASTVIDEO_ATTENTION_BACKEND", "FLASH_ATTN")
-    monkeypatch.setenv("FASTVIDEO_DISABLE_ATTENTION_COMPILE", "1")
+    from fastvideo import envs
+    env_overrides.enter_context(envs.FASTVIDEO_ATTENTION_BACKEND.override("FLASH_ATTN"))
+    env_overrides.enter_context(envs.FASTVIDEO_DISABLE_ATTENTION_COMPILE.override(True))
     monkeypatch.setattr(ring, "get_ring_size", lambda: 2)
     monkeypatch.setattr(ring, "get_sp_world_size", lambda: 2)
     monkeypatch.setattr(ring, "get_ulysses_group", lambda: None)

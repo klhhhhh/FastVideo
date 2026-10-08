@@ -50,7 +50,11 @@ def test_ring_padding_matches_dense_attention(monkeypatch, seq_len, rank):
     valid = max(0, min(shard_len, seq_len - rank * shard_len))
     expected[:, valid:] = 0
     torch.testing.assert_close(actual, expected, atol=1e-6, rtol=1e-5)
-    assert torch.isfinite(lse).all()
+    # H3 skips padded queries entirely: valid rows retain the dense LSE,
+    # while excluded rows have zero output and a -inf normalization sentinel.
+    _, expected_lse = dense_block(local[0][:, :valid], k, v, softmax_scale=8**-0.5)
+    torch.testing.assert_close(lse[:, :, :valid], expected_lse, atol=1e-6, rtol=1e-5)
+    assert torch.isneginf(lse[:, :, valid:]).all()
 
 
 @pytest.mark.parametrize("rank", [0, 1, 2, 3])
