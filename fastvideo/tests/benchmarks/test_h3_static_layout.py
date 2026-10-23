@@ -6,6 +6,8 @@ from __future__ import annotations
 import csv
 import json
 
+import pytest
+
 from fastvideo.benchmarks.h3_static_layout.audio_kv_residency import run_audio_kv_residency_sweep
 from fastvideo.benchmarks.h3_static_layout.joint_sweep import run_joint_static_layout_sweep
 from fastvideo.benchmarks.h3_static_layout.model import (
@@ -30,6 +32,13 @@ def _small_shape() -> H3StaticLayoutShape:
         link_bandwidth_bytes_per_ms=1024 * 1024,
         token_pair_work_per_ms=1_000_000,
     )
+
+
+def test_static_layout_shape_rejects_single_rank_sweeps() -> None:
+    shape = H3StaticLayoutShape(world_size=1)
+
+    with pytest.raises(ValueError, match="world_size must be at least 2"):
+        shape.validate()
 
 
 def test_prefix_query_spread_sweep_reduces_rho_and_increases_communication() -> None:

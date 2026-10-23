@@ -22,8 +22,8 @@ class H3StaticLayoutShape:
     token_pair_work_per_ms: float = 50_000_000
 
     def validate(self) -> None:
-        if self.world_size <= 0:
-            raise ValueError("world_size must be positive")
+        if self.world_size < 2:
+            raise ValueError("world_size must be at least 2 for distributed static-layout experiments")
         if min(self.text_tokens, self.audio_tokens, self.video_tokens) < 0:
             raise ValueError("token counts must be non-negative")
         if self.video_tokens <= 0:
