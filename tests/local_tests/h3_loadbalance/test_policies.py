@@ -89,3 +89,43 @@ def test_audio_group_residency_has_one_collective_copy_per_group(groups):
         assert np.all(audio[:,g*(8//groups):(g+1)*(8//groups)].sum(1)==1)
     assert np.all(res[np.arange(layout.n),own])
     assert np.all(res[layout.tokens==2].sum(1)==1)
+
+
+@pytest.mark.parametrize('spread', [1,2,4,8])
+@pytest.mark.parametrize('groups', [1,2,4,8])
+def test_joint_spread_replica_token_oracle(spread, groups):
+    sizes=np.array([8,16,3,2,4,1,2,3,1,2])
+    layout=Layout(sizes,np.repeat(np.arange(len(sizes)),sizes),np.array(list(np.ndindex(2,2,2))),2)
+    own=owners(layout,8,np.arange(8),prefix_spread=spread)
+    assert set(own[layout.tokens<2])==set(range(spread))
+    mask=np.eye(8,dtype=bool)
+    r=evaluate(mask,layout,own,8,True,groups)
+    for mode in ['union','separate']:
+        assert sum(r[mode+'_'+m+'_demand'][0] for m in ['text','audio','video']) == r[mode+'_demand'][0]
+        assert r[mode+'_flows'].sum() == r[mode+'_recv'].sum() == r[mode+'_send'].sum()
+    # Independent per-token audio demand for video and prefix phases.
+    res=residency(layout,own,8,True,groups)
+    total=0
+    for g in range(8):
+        for prefix in [True,False]:
+            queries=[i for i,t in enumerate(layout.tokens) if own[i]==g and (t<2)==prefix]
+            if queries:
+                total+=sum(512 for k,t in enumerate(layout.tokens) if t==1 and not res[k,g])
+    assert total==r['separate_audio_demand'][0]
+
+
+def test_prefetch_oracle_and_graph_capacity():
+    from plan_experiments import prefetch_metrics, graph_layout, pareto
+    a=np.zeros((1,40,40),bool); p=a.copy()
+    a[0,0,[20,21]]=True;p[0,0,[20,22]]=True
+    video=np.arange(40)//20
+    result=prefetch_metrics(a,p,np.ones(40,int),video,2)
+    assert result['useful_prefetch_bytes']==512
+    assert result['wasted_prefetch_bytes']==512
+    assert result['residual_remote_bytes']==512
+    assert result['recall']==result['precision']==.5
+    for method in ['graph','greedy','swap']:
+        v=graph_layout(a[0].astype(float),np.ones(40),2,video,method)
+        np.testing.assert_array_equal(np.bincount(v),[20,20])
+    rows=[dict(x=1,y=3),dict(x=2,y=2),dict(x=3,y=4)]
+    assert pareto(rows,['x','y'])==rows[:2]

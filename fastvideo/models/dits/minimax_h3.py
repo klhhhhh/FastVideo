@@ -248,14 +248,25 @@ class MiniMaxH3Attention(nn.Module):
         # (ALLOWED_NEW_PARAM_PATTERNS) and the branch is exactly disabled
         # until finetuned. Built only when VSA-H3 actually resolves, keeping
         # the FLASH/SDPA paths and their state_dict untouched.
-        resolved_backend = get_attn_backend(attention_head_dim,
-                                            get_compute_dtype(),
-                                            supported_attention_backends=supported_attention_backends)
-        use_vsa = resolved_backend.get_name() == "VIDEO_SPARSE_ATTN_H3"
-        if use_vsa and get_ring_size() > 1:
-            raise NotImplementedError("MiniMax H3 VSA-H3 does not support Ring Attention. "
-                                      "Use FLASH_ATTN or set ring_size=1.")
-        attention_cls = DistributedAttention_VSA if use_vsa else DistributedAttention
+        # The text refiner excludes VSA. Pure Ring can run it using the same
+        # fused accumulator, without requiring the optional FA2 extension.
+        pure_ring_refiner = (get_ring_size() > 1 and get_ring_size() == get_sp_world_size()
+                             and AttentionBackendEnum.VIDEO_SPARSE_ATTN_H3 not in supported_attention_backends)
+        if pure_ring_refiner:
+            from fastvideo.attention.h3_ring_attention import H3DenseRingAttention
+            attention_cls = H3DenseRingAttention
+            use_vsa = use_sparse_ring = False
+        else:
+            resolved_backend = get_attn_backend(attention_head_dim,
+                                                get_compute_dtype(),
+                                                supported_attention_backends=supported_attention_backends)
+            use_vsa = resolved_backend.get_name() == "VIDEO_SPARSE_ATTN_H3"
+            use_sparse_ring = use_vsa and get_ring_size() > 1
+            if use_sparse_ring:
+                from fastvideo.attention.h3_ring_attention import H3RingAttention
+                attention_cls = H3RingAttention
+            else:
+                attention_cls = DistributedAttention_VSA if use_vsa else DistributedAttention
         self.distributed_attention = attention_cls(
             num_heads=num_attention_heads,
             head_size=attention_head_dim,
@@ -267,7 +278,7 @@ class MiniMaxH3Attention(nn.Module):
         # Opt-in inference route: VSA-H3 selection on the block-sparse FP4
         # kernel (see minimax_h3_vsa_fp4); grad and compile keep the generic path.
         self._layer_idx = layer_idx_from_prefix(prefix, default=-1)
-        self._vsa_fp4 = use_vsa and vsa_fp4_requested()
+        self._vsa_fp4 = use_vsa and not use_sparse_ring and vsa_fp4_requested()
         self._vsa_tile_first = use_vsa and envs.FASTVIDEO_H3_VSA_TILE_FIRST.get()
         self.to_gate_compress: ReplicatedLinear | None = None
         # None = unchecked; the first forward tests the loaded weight once and
@@ -1204,6 +1215,11 @@ class MiniMaxH3Transformer3DModel(BaseDiT):
         adaln_indices = timestep_indices * MINIMAX_H3_MODALITY_NUM + token_tags
         local_timestep_indices = timestep_indices
         original_seq_len = sequence_length
+        full_rotary_emb, full_adaln_indices = rotary_emb, adaln_indices
+        layout_session = None
+        if get_ring_size() > 1:
+            from fastvideo.attention.h3_ring_attention import H3LayoutSession
+            layout_session = H3LayoutSession.create(self.transformer_blocks, sequence_length, packed_hidden_states.device)
 
         if sp_world_size > 1:
             packed_hidden_states, _ = sequence_model_parallel_shard(packed_hidden_states, dim=1)
@@ -1226,7 +1242,14 @@ class MiniMaxH3Transformer3DModel(BaseDiT):
             if STAGES.enabled:
                 logger.info("H3_MEMORY_BLOCK %d allocated=%.3f GiB reserved=%.3f GiB", block_index,
                             torch.cuda.memory_allocated() / 2**30, torch.cuda.memory_reserved() / 2**30)
-            with nvtx_range(f"minimax_h3.transformer_block.{block_index}"), STAGES.span("block_total"):
+            layout_context = contextlib.nullcontext()
+            if layout_session is not None:
+                delegate = block.attn.distributed_attention
+                packed_hidden_states, local_ids = layout_session.prepare(packed_hidden_states, delegate)
+                adaln_indices = full_adaln_indices[local_ids]
+                rotary_emb = (full_rotary_emb[0][local_ids], full_rotary_emb[1][local_ids])
+                layout_context = layout_session.activate(delegate)
+            with layout_context, nvtx_range(f"minimax_h3.transformer_block.{block_index}"), STAGES.span("block_total"):
                 packed_hidden_states = block(
                     packed_hidden_states,
                     temb,
@@ -1235,6 +1258,8 @@ class MiniMaxH3Transformer3DModel(BaseDiT):
                     original_seq_len,
                 )
 
+        if layout_session is not None:
+            packed_hidden_states = layout_session.restore(packed_hidden_states)
         packed_hidden_states = self.norm_out(
             packed_hidden_states,
             temb,

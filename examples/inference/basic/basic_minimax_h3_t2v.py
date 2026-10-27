@@ -40,7 +40,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--num-gpus", type=int, default=4)
     parser.add_argument("--ring-size", type=int, default=1,
-                        help="Ring subgroup size; must divide num-gpus. Requires FLASH_ATTN.")
+                        help="Ring subgroup size; must divide num-gpus. VSA-H3 requires pure Ring.")
+    parser.add_argument("--attention-backend", choices=["FLASH_ATTN", "VIDEO_SPARSE_ATTN_H3"], default=None)
+    parser.add_argument("--h3-ring-persistent", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--h3-ring-metrics", help="Optional per-rank payload JSONL directory; adds logging overhead")
+    parser.add_argument("--h3-ring-prefetch", help="Train-only prior .npz; demand transport only")
+    parser.add_argument("--h3-ring-layout", help="Train-selected runtime_layout.json; omit for packed shards")
+    parser.add_argument("--h3-ring-transport", choices=["ring", "demand"], default="ring")
+    parser.add_argument("--h3-ring-schedule", choices=["fixed", "step", "every10", "drift"], default="fixed")
+    parser.add_argument("--vsa-sparsity", type=float, default=None)
+    parser.add_argument("--vsa-tile-size", type=int, choices=[64,128,256], default=None)
     parser.add_argument(
         "--execution-backend",
         choices=("mp", "uni", "ray"),
@@ -86,7 +95,16 @@ def main() -> None:
 
     # Boot-time run configuration folded into FastVideoArgs (the same
     # experimental-dict route basic_fasth3.py uses for the VSA knobs).
-    experimental: dict[str, object] = {"ring_size": args.ring_size}
+    experimental: dict[str, object] = {
+        "ring_size": args.ring_size, "h3_ring_persistent": args.h3_ring_persistent, "h3_ring_layout": args.h3_ring_layout,
+        "h3_ring_metrics": args.h3_ring_metrics, "h3_ring_prefetch": args.h3_ring_prefetch, "h3_ring_transport": args.h3_ring_transport, "h3_ring_schedule": args.h3_ring_schedule,
+    }
+    if args.attention_backend is not None:
+        experimental["attention_backend"] = args.attention_backend
+    if args.vsa_sparsity is not None:
+        experimental["VSA_sparsity"] = args.vsa_sparsity
+    if args.vsa_tile_size is not None:
+        experimental["VSA_tile_size"] = args.vsa_tile_size
     if args.inference_torch_compile:
         experimental["inference_torch_compile"] = True
 

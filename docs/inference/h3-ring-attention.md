@@ -1,5 +1,8 @@
 # MiniMax H3 Ring Attention
 
+For VSA-H3, fitted layouts and the four-phase experiment workflow, see
+[sparse Ring experiments and inference](h3-sparse-ring-experiments.md).
+
 H3 dense inference supports pure Ring (`ring_size=sp_size`) and hybrid
 Ring × Ulysses (`1 < ring_size < sp_size`). Select `FLASH_ATTN` explicitly.
 The Ring kernel currently uses FlashAttention 2, even when the ordinary dense
@@ -45,7 +48,8 @@ SP size to `--num-gpus`.
   imposes no SP head divisibility constraint. Ring size must divide SP size.
 - Ring supports non-causal fp16/bf16 inference with equal Q/K/V head counts.
   Training, GQA, replicated Q/K/V, and non-FlashAttention backends are rejected.
-  VSA-H3 with Ring is rejected; select dense `FLASH_ATTN` explicitly.
+  VSA-H3 has a separate pure-Ring implementation; see
+  [sparse Ring experiments and inference](h3-sparse-ring-experiments.md).
 - Regional fullgraph compilation falls back to eager with an explanatory
   message. Ordinary compilation keeps the existing attention graph-break
   boundary; compiling Ring P2P into a full graph is unsupported.

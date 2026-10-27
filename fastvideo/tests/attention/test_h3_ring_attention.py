@@ -47,12 +47,17 @@ def test_h3_heads_use_ulysses_size(monkeypatch, sp, ulysses, heads, valid):
                 h3.MiniMaxH3Transformer3DModel(config, {})
 
 
-def test_h3_vsa_ring_conflict(monkeypatch):
+def test_h3_vsa_ring_dispatch(monkeypatch):
     import fastvideo.models.dits.minimax_h3 as h3
     monkeypatch.setattr(h3, "get_ring_size", lambda: 2)
+    monkeypatch.setattr(h3, "get_sp_world_size", lambda: 2)
     monkeypatch.setattr(h3, "get_attn_backend", lambda *a, **k: SimpleNamespace(get_name=lambda: "VIDEO_SPARSE_ATTN_H3"))
-    with pytest.raises(NotImplementedError, match="VSA-H3.*Ring"):
-        h3.MiniMaxH3Attention(24, 3, 128, 1e-5, (AttentionBackendEnum.VIDEO_SPARSE_ATTN_H3,), None, "test")
+    import fastvideo.attention.h3_ring_attention as sparse
+    monkeypatch.setattr(sparse, "get_ring_size", lambda: 2)
+    monkeypatch.setattr(sparse, "get_sp_world_size", lambda: 2)
+    layer = h3.MiniMaxH3Attention(24, 3, 128, 1e-5, (AttentionBackendEnum.VIDEO_SPARSE_ATTN_H3,), None, "test")
+    assert isinstance(layer.distributed_attention, sparse.H3RingAttention)
+    assert not layer._vsa_fp4
 
 
 def test_h3_ring_regional_compile_falls_back(monkeypatch):
@@ -179,7 +184,16 @@ def test_h3_ring_dispatch_with_compile_graph_break(monkeypatch, env_overrides):
     monkeypatch.setattr(ring, "ring_flash_attn_func", kernel)
     monkeypatch.setattr(RingAttention, "_slice_local_rope", unexpected_rope)
     import fastvideo.attention.layer as layer
-    from fastvideo.attention.backends.flash_attn import FlashAttentionBackend
+    # This is a dispatch/graph-break unit test; the actual kernel is mocked
+    # above, so do not import an optional CUDA extension to construct it.
+    class FlashAttentionBackend:
+        @staticmethod
+        def get_name():
+            return "FLASH_ATTN"
+        @staticmethod
+        def get_impl_cls():
+            return lambda **kwargs: SimpleNamespace()
+    monkeypatch.setattr(ring, "HAS_FLASH_ATTN_2", True)
     monkeypatch.setattr(layer, "get_compute_dtype", lambda: torch.bfloat16)
     monkeypatch.setattr(h3, "get_compute_dtype", lambda: torch.bfloat16)
     monkeypatch.setattr(layer, "get_attn_backend", lambda *a, **kw: FlashAttentionBackend)

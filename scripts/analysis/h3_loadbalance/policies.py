@@ -29,6 +29,8 @@ def video_layout(layout, ranks, geometry):
         factors = {2: (2, 1, 1), 4: (2, 2, 1), 8: (2, 2, 2)}[ranks]
         bins = np.minimum(c * factors // (c.max(0) + 1), np.array(factors) - 1)
         return np.ravel_multi_index(bins.T, factors)
+    if geometry == 'contiguous':
+        return np.arange(len(c)) * ranks // len(c)
     axes = (2, 1, 0) if geometry == 'temporal' else (0, 2, 1)
     order = np.lexsort(tuple(c[:, a] for a in axes))
     result = np.empty(len(c), int)
@@ -36,19 +38,22 @@ def video_layout(layout, ranks, geometry):
     return result
 
 
-def owners(layout, ranks, video=None, weighted=False):
+def owners(layout, ranks, video=None, weighted=False, prefix_spread=None):
+    spread = ranks if prefix_spread is None else prefix_spread
+    if not 1 <= spread <= ranks:
+        raise ValueError("prefix_spread must be between 1 and ranks")
     if video is None:
         return np.minimum(np.arange(layout.n) // int(np.ceil(layout.n / ranks)), ranks - 1)
     out = np.empty(layout.n, int)
     prefix = layout.tokens < layout.prefix
     out[~prefix] = video[layout.tokens[~prefix] - layout.prefix]
     if not weighted:
-        out[prefix] = np.arange(prefix.sum()) % ranks
+        out[prefix] = np.arange(prefix.sum()) % spread
     else:
         vs = layout.sizes[layout.prefix:]
         cost = np.bincount(video, weights=vs, minlength=ranks) * (layout.sizes[:layout.prefix].sum() + .1 * vs.sum())
         for i in np.flatnonzero(prefix):
-            g = int(cost.argmin())
+            g = int(cost[:spread].argmin())
             out[i] = g
             cost[g] += layout.n
     return out
@@ -97,6 +102,13 @@ def evaluate(masks, layout, owner, ranks, text_replica=True, audio_groups=1):
                         ('separate', video_need.astype(np.int64) + dense.astype(np.int64))]:
         flows = np.einsum('bgk,sgk->bsg', needs, routes) * KV_BYTES
         result[mode + '_demand'] = flows.sum((1, 2))
+        result[mode + '_flows'] = flows + refresh[None]
+        for modality, sl in [('text', slice(0, 1)), ('audio', slice(1, p)), ('video', slice(p, None))]:
+            result[mode + '_' + modality + '_demand'] = np.einsum(
+                'bgk,sgk->b', needs[:, :, sl], routes[:, :, sl]) * KV_BYTES
+        # Mean destinations per token, including explicit replica refresh.
+        result[mode + '_destination_fanout'] = (np.einsum('bgk,sgk->b', needs > 0, routes) + refresh.sum() / KV_BYTES) / layout.n
+
         result[mode + '_recv'] = flows.sum(1) + refresh.sum(0)
         result[mode + '_send'] = flows.sum(2) + refresh.sum(1)
     assert np.all(work.sum(1) == (masks @ layout.sizes[p:] * layout.sizes[p:]).sum(1) +

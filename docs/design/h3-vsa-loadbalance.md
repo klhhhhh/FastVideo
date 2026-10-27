@@ -1,5 +1,9 @@
 # H3 VSA 布局与通信成本实验
 
+本文描述原始 `run_experiments.py` 实验。后续四阶段联合扫描、预测/拓扑实验和
+真实分布式推理实现见 [H3 sparse Ring experiments](../inference/h3-sparse-ring-experiments.md)。
+`plan_experiments.py` 与原实验分别输出，原脚本仍只做离线模拟。
+
 实现位于 `scripts/analysis/h3_loadbalance/`，结果写入 CLI 的 `--output` 目录。
 这是离线布局模拟器及单 GPU 数值回放，不接入 `parallel_state.py`，不改变 H3 推理行为。
 

@@ -361,6 +361,7 @@ class MiniMaxH3VSAMetadata(AttentionMetadata):
     # tokens per tile (256, 128 or 64); selects the tile geometry AND the
     # kernel route in forward() (256 -> VSA-256 CuTe/Triton, 128 -> sm_100a
     # CUDA, 64 -> native Triton or opt-in sm_100a CUDA)
+    packed_token_segments: tuple[int | tuple[int, int, int], ...] = ()
     tile_elems: int = _TILE_ELEMS
     # layers forced dense regardless of sparsity (probe-guided opt-outs)
     dense_layers: tuple[int, ...] = ()
@@ -450,6 +451,7 @@ class MiniMaxH3VSAMetadataBuilder(AttentionMetadataBuilder):
             dense_layers_tensor=torch.tensor(dense_layers, device=device, dtype=torch.int64),
             video_tile_spans=video_tile_spans,
             span_sparsities=span_sparsities,
+            packed_token_segments=tuple(token_segments),
             tile_elems=int(tile_size),
             dense_layers=dense_layers,
             tile_buf_holder=self._tile_buf_holder,

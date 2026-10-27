@@ -173,6 +173,12 @@ class FastVideoArgs:
     # and the remaining ``sp_size // ring_size`` factor is the Ulysses
     # subgroup size (see ``_check_ring_attention_args``).
     ring_size: int = 1
+    h3_ring_persistent: bool = True
+    h3_ring_metrics: str | None = None
+    h3_ring_layout: str | None = None
+    h3_ring_prefetch: str | None = None
+    h3_ring_transport: str = "ring"
+    h3_ring_schedule: str = "fixed"
     hsdp_replicate_dim: int = 1
     hsdp_shard_dim: int = -1
     dist_timeout: int | None = None  # torch.distributed timeout in seconds
@@ -932,6 +938,13 @@ class FastVideoArgs:
             help="Disable autocast for denoising loop and vae decoding in pipeline sampling",
         )
 
+        parser.add_argument("--h3-ring-persistent", action=StoreBoolean, default=True)
+        parser.add_argument("--h3-ring-layout", type=str, default=None)
+        parser.add_argument("--h3-ring-prefetch", type=str, default=None)
+        parser.add_argument("--h3-ring-metrics", type=str, default=None)
+        parser.add_argument("--h3-ring-transport", choices=["ring", "demand"], default="ring")
+        parser.add_argument("--h3-ring-schedule", choices=["fixed", "step", "every10", "drift"], default="fixed")
+
         # VSA parameters
         parser.add_argument(
             "--VSA-sparsity",
@@ -1245,6 +1258,14 @@ class FastVideoArgs:
         Ulysses subgroup size). Ring Attention training/backward is not
         supported in either case.
         """
+        if self.h3_ring_transport not in {"ring", "demand"}:
+            raise ValueError("h3_ring_transport must be ring or demand")
+        if self.h3_ring_prefetch and self.h3_ring_transport != "demand":
+            raise ValueError("H3 Ring prefetch requires demand transport")
+        if self.h3_ring_schedule not in {"fixed", "step", "every10", "drift"}:
+            raise ValueError("Unknown h3_ring_schedule")
+        if self.h3_ring_schedule != "fixed" and not self.h3_ring_layout:
+            raise ValueError("Adaptive H3 Ring needs h3_ring_layout")
         if self.ring_size < 1:
             raise ValueError(f"ring_size must be >= 1, got {self.ring_size}.")
 
