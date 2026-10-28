@@ -1,0 +1,12 @@
+{
+  "python": "3.12.15",
+  "torch": "2.12.0+cu126",
+  "triton": "3.7.0",
+  "diffusers": "0.42.0",
+  "flashinfer": "0.6.8",
+  "cuda_runtime": "12.6",
+  "cudnn": 91002,
+  "deterministic_algorithms": false,
+  "cudnn_benchmark": false,
+  "torch_matmul_allow_tf32": false
+}

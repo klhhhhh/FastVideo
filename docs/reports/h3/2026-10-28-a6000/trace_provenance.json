@@ -1,0 +1,507 @@
+{
+  "schema": "h3-real-mask-trace-v1",
+  "source": "outputs/h3-new-trace/raw",
+  "samples": [
+    {
+      "prompt_id": 0,
+      "repeat": 1,
+      "rank": 0,
+      "denoising_stage_seconds": 40.83152854198124,
+      "transformer_cuda_ms": [
+        5096.134765625,
+        3943.334228515625,
+        3945.6142578125,
+        3954.71533203125
+      ],
+      "video_timesteps": [
+        8.344650268554688e-05,
+        0.02716749906539917,
+        0.07692307233810425,
+        0.19999998807907104
+      ],
+      "audio_timesteps": [
+        0.00033360719680786133,
+        0.10048043727874756,
+        0.25,
+        0.5
+      ],
+      "video_sigmas": [
+        0.9999165534973145,
+        0.9728325009346008,
+        0.9230769276618958,
+        0.800000011920929,
+        0.0
+      ],
+      "audio_sigmas": [
+        0.9996663928031921,
+        0.8995195627212524,
+        0.75,
+        0.5,
+        0.0
+      ],
+      "peak_allocated_mib": 37618.1455078125,
+      "complete": true,
+      "prompt": "A red panda walking through a forest",
+      "seed": 1000,
+      "model": "/tmp/h3-a6000-full/model",
+      "actual_gpus": 2,
+      "global_mask_rank_deduplication": true,
+      "records": 200,
+      "metadata_recovery": "All 200 mask writes and forward validation completed; sample JSON write had duplicate prompt_id keyword. Reconstructed from saved measurements/config; converter independently validates every mask."
+    },
+    {
+      "complete": true,
+      "prompt": "A golden retriever running across a grassy field",
+      "seed": 1000,
+      "model": "/tmp/h3-a6000-full/model",
+      "actual_gpus": 2,
+      "global_mask_rank_deduplication": true,
+      "records": 200,
+      "prompt_id": 1,
+      "repeat": 1,
+      "rank": 0,
+      "denoising_stage_seconds": 34.01350206788629,
+      "transformer_cuda_ms": [
+        6107.64453125,
+        3951.958740234375,
+        3942.868896484375,
+        3951.9130859375
+      ],
+      "video_timesteps": [
+        8.344650268554688e-05,
+        0.02716749906539917,
+        0.07692307233810425,
+        0.19999998807907104
+      ],
+      "audio_timesteps": [
+        0.00033360719680786133,
+        0.10048043727874756,
+        0.25,
+        0.5
+      ],
+      "video_sigmas": [
+        0.9999165534973145,
+        0.9728325009346008,
+        0.9230769276618958,
+        0.800000011920929,
+        0.0
+      ],
+      "audio_sigmas": [
+        0.9996663928031921,
+        0.8995195627212524,
+        0.75,
+        0.5,
+        0.0
+      ],
+      "peak_allocated_mib": 37617.14111328125
+    },
+    {
+      "complete": true,
+      "prompt": "Ocean waves breaking on a rocky shore at sunset",
+      "seed": 1000,
+      "model": "/tmp/h3-a6000-full/model",
+      "actual_gpus": 2,
+      "global_mask_rank_deduplication": true,
+      "records": 200,
+      "prompt_id": 2,
+      "repeat": 2,
+      "rank": 0,
+      "denoising_stage_seconds": 35.273980595055036,
+      "transformer_cuda_ms": [
+        6276.7744140625,
+        3950.601806640625,
+        3951.78857421875,
+        3952.974853515625
+      ],
+      "video_timesteps": [
+        8.344650268554688e-05,
+        0.02716749906539917,
+        0.07692307233810425,
+        0.19999998807907104
+      ],
+      "audio_timesteps": [
+        0.00033360719680786133,
+        0.10048043727874756,
+        0.25,
+        0.5
+      ],
+      "video_sigmas": [
+        0.9999165534973145,
+        0.9728325009346008,
+        0.9230769276618958,
+        0.800000011920929,
+        0.0
+      ],
+      "audio_sigmas": [
+        0.9996663928031921,
+        0.8995195627212524,
+        0.75,
+        0.5,
+        0.0
+      ],
+      "peak_allocated_mib": 37618.84423828125
+    },
+    {
+      "complete": true,
+      "prompt": "A steam train traveling through snowy mountains",
+      "seed": 1000,
+      "model": "/tmp/h3-a6000-full/model",
+      "actual_gpus": 2,
+      "global_mask_rank_deduplication": true,
+      "records": 200,
+      "prompt_id": 3,
+      "repeat": 3,
+      "rank": 0,
+      "denoising_stage_seconds": 31.048554772045463,
+      "transformer_cuda_ms": [
+        4065.809326171875,
+        3949.937744140625,
+        3945.783447265625,
+        3962.96240234375
+      ],
+      "video_timesteps": [
+        8.344650268554688e-05,
+        0.02716749906539917,
+        0.07692307233810425,
+        0.19999998807907104
+      ],
+      "audio_timesteps": [
+        0.00033360719680786133,
+        0.10048043727874756,
+        0.25,
+        0.5
+      ],
+      "video_sigmas": [
+        0.9999165534973145,
+        0.9728325009346008,
+        0.9230769276618958,
+        0.800000011920929,
+        0.0
+      ],
+      "audio_sigmas": [
+        0.9996663928031921,
+        0.8995195627212524,
+        0.75,
+        0.5,
+        0.0
+      ],
+      "peak_allocated_mib": 37618.85791015625
+    },
+    {
+      "complete": true,
+      "prompt": "A butterfly landing on a purple flower",
+      "seed": 1000,
+      "model": "/tmp/h3-a6000-full/model",
+      "actual_gpus": 2,
+      "global_mask_rank_deduplication": true,
+      "records": 200,
+      "prompt_id": 4,
+      "repeat": 4,
+      "rank": 0,
+      "denoising_stage_seconds": 31.142654599971138,
+      "transformer_cuda_ms": [
+        4050.8798828125,
+        3934.94091796875,
+        3942.17333984375,
+        3941.2783203125
+      ],
+      "video_timesteps": [
+        8.344650268554688e-05,
+        0.02716749906539917,
+        0.07692307233810425,
+        0.19999998807907104
+      ],
+      "audio_timesteps": [
+        0.00033360719680786133,
+        0.10048043727874756,
+        0.25,
+        0.5
+      ],
+      "video_sigmas": [
+        0.9999165534973145,
+        0.9728325009346008,
+        0.9230769276618958,
+        0.800000011920929,
+        0.0
+      ],
+      "audio_sigmas": [
+        0.9996663928031921,
+        0.8995195627212524,
+        0.75,
+        0.5,
+        0.0
+      ],
+      "peak_allocated_mib": 37618.85791015625
+    },
+    {
+      "complete": true,
+      "prompt": "A chef chopping vegetables in a bright kitchen",
+      "seed": 1000,
+      "model": "/tmp/h3-a6000-full/model",
+      "actual_gpus": 2,
+      "global_mask_rank_deduplication": true,
+      "records": 200,
+      "prompt_id": 5,
+      "repeat": 5,
+      "rank": 0,
+      "denoising_stage_seconds": 30.64174200303387,
+      "transformer_cuda_ms": [
+        4058.955810546875,
+        3980.5,
+        4040.9521484375,
+        3945.549072265625
+      ],
+      "video_timesteps": [
+        8.344650268554688e-05,
+        0.02716749906539917,
+        0.07692307233810425,
+        0.19999998807907104
+      ],
+      "audio_timesteps": [
+        0.00033360719680786133,
+        0.10048043727874756,
+        0.25,
+        0.5
+      ],
+      "video_sigmas": [
+        0.9999165534973145,
+        0.9728325009346008,
+        0.9230769276618958,
+        0.800000011920929,
+        0.0
+      ],
+      "audio_sigmas": [
+        0.9996663928031921,
+        0.8995195627212524,
+        0.75,
+        0.5,
+        0.0
+      ],
+      "peak_allocated_mib": 37618.85791015625
+    },
+    {
+      "complete": true,
+      "prompt": "A small boat drifting across a calm mountain lake",
+      "seed": 1000,
+      "model": "/tmp/h3-a6000-full/model",
+      "actual_gpus": 2,
+      "global_mask_rank_deduplication": true,
+      "records": 200,
+      "prompt_id": 6,
+      "repeat": 6,
+      "rank": 0,
+      "denoising_stage_seconds": 32.64910141204018,
+      "transformer_cuda_ms": [
+        4051.614990234375,
+        3942.806640625,
+        3953.493896484375,
+        3946.769287109375
+      ],
+      "video_timesteps": [
+        8.344650268554688e-05,
+        0.02716749906539917,
+        0.07692307233810425,
+        0.19999998807907104
+      ],
+      "audio_timesteps": [
+        0.00033360719680786133,
+        0.10048043727874756,
+        0.25,
+        0.5
+      ],
+      "video_sigmas": [
+        0.9999165534973145,
+        0.9728325009346008,
+        0.9230769276618958,
+        0.800000011920929,
+        0.0
+      ],
+      "audio_sigmas": [
+        0.9996663928031921,
+        0.8995195627212524,
+        0.75,
+        0.5,
+        0.0
+      ],
+      "peak_allocated_mib": 37618.97412109375
+    },
+    {
+      "complete": true,
+      "prompt": "A dancer spinning slowly on a theater stage",
+      "seed": 1000,
+      "model": "/tmp/h3-a6000-full/model",
+      "actual_gpus": 2,
+      "global_mask_rank_deduplication": true,
+      "records": 200,
+      "prompt_id": 7,
+      "repeat": 7,
+      "rank": 0,
+      "denoising_stage_seconds": 30.962917058030143,
+      "transformer_cuda_ms": [
+        4055.2998046875,
+        3941.208251953125,
+        3940.453369140625,
+        3951.6103515625
+      ],
+      "video_timesteps": [
+        8.344650268554688e-05,
+        0.02716749906539917,
+        0.07692307233810425,
+        0.19999998807907104
+      ],
+      "audio_timesteps": [
+        0.00033360719680786133,
+        0.10048043727874756,
+        0.25,
+        0.5
+      ],
+      "video_sigmas": [
+        0.9999165534973145,
+        0.9728325009346008,
+        0.9230769276618958,
+        0.800000011920929,
+        0.0
+      ],
+      "audio_sigmas": [
+        0.9996663928031921,
+        0.8995195627212524,
+        0.75,
+        0.5,
+        0.0
+      ],
+      "peak_allocated_mib": 37618.97412109375
+    },
+    {
+      "complete": true,
+      "prompt": "A cyclist riding along a tree lined country road",
+      "seed": 1000,
+      "model": "/tmp/h3-a6000-full/model",
+      "actual_gpus": 2,
+      "global_mask_rank_deduplication": true,
+      "records": 200,
+      "prompt_id": 8,
+      "repeat": 8,
+      "rank": 0,
+      "denoising_stage_seconds": 30.621293458971195,
+      "transformer_cuda_ms": [
+        4056.790283203125,
+        3954.692626953125,
+        3933.570068359375,
+        3947.271240234375
+      ],
+      "video_timesteps": [
+        8.344650268554688e-05,
+        0.02716749906539917,
+        0.07692307233810425,
+        0.19999998807907104
+      ],
+      "audio_timesteps": [
+        0.00033360719680786133,
+        0.10048043727874756,
+        0.25,
+        0.5
+      ],
+      "video_sigmas": [
+        0.9999165534973145,
+        0.9728325009346008,
+        0.9230769276618958,
+        0.800000011920929,
+        0.0
+      ],
+      "audio_sigmas": [
+        0.9996663928031921,
+        0.8995195627212524,
+        0.75,
+        0.5,
+        0.0
+      ],
+      "peak_allocated_mib": 37618.97412109375
+    },
+    {
+      "complete": true,
+      "prompt": "A waterfall flowing into a clear pool in a tropical forest",
+      "seed": 1000,
+      "model": "/tmp/h3-a6000-full/model",
+      "actual_gpus": 2,
+      "global_mask_rank_deduplication": true,
+      "records": 200,
+      "prompt_id": 9,
+      "repeat": 9,
+      "rank": 0,
+      "denoising_stage_seconds": 32.717881795950234,
+      "transformer_cuda_ms": [
+        6092.6142578125,
+        3950.589111328125,
+        3942.12744140625,
+        3943.803466796875
+      ],
+      "video_timesteps": [
+        8.344650268554688e-05,
+        0.02716749906539917,
+        0.07692307233810425,
+        0.19999998807907104
+      ],
+      "audio_timesteps": [
+        0.00033360719680786133,
+        0.10048043727874756,
+        0.25,
+        0.5
+      ],
+      "video_sigmas": [
+        0.9999165534973145,
+        0.9728325009346008,
+        0.9230769276618958,
+        0.800000011920929,
+        0.0
+      ],
+      "audio_sigmas": [
+        0.9996663928031921,
+        0.8995195627212524,
+        0.75,
+        0.5,
+        0.0
+      ],
+      "peak_allocated_mib": 37619.09130859375
+    }
+  ],
+  "train_prompts": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "test_prompts": [
+    8,
+    9
+  ],
+  "pilot": false,
+  "mask_axes": [
+    "prompt",
+    "step",
+    "layer",
+    "head",
+    "q_video_tile",
+    "kv_video_tile"
+  ],
+  "actual_gpus": 2,
+  "mode": "real two-GPU inference masks, rank-agreed and rank-zero deduplicated; new dataset",
+  "shape": [
+    10,
+    4,
+    50,
+    56,
+    40,
+    40
+  ],
+  "python": "3.12.15",
+  "torch": "2.12.0+cu126",
+  "numpy": "2.5.4",
+  "seconds": 1.804152488708496,
+  "current_revision": "089051e89a076fa4829a3606afb841f676d7af8f",
+  "converter_sha256": "d215c0812b8e682df010690e72dab0de8511de0c41b65011965a860649668d6b",
+  "complete": true
+}

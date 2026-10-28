@@ -1,0 +1,242 @@
+[
+  {
+    "case": "A",
+    "file": "video_p08_r00.mp4",
+    "streams": [
+      {
+        "codec_type": "video",
+        "width": 256,
+        "height": 256,
+        "duration": "5.166667",
+        "nb_frames": "124"
+      },
+      {
+        "codec_type": "audio",
+        "duration": "5.166656",
+        "nb_frames": "163"
+      }
+    ],
+    "audio_finite": true,
+    "audio_rms": 0.039655767381191254
+  },
+  {
+    "case": "A",
+    "file": "video_p08_r01.mp4",
+    "streams": [
+      {
+        "codec_type": "video",
+        "width": 256,
+        "height": 256,
+        "duration": "5.166667",
+        "nb_frames": "124"
+      },
+      {
+        "codec_type": "audio",
+        "duration": "5.166656",
+        "nb_frames": "163"
+      }
+    ],
+    "audio_finite": true,
+    "audio_rms": 0.03958234190940857
+  },
+  {
+    "case": "A",
+    "file": "video_p08_r02.mp4",
+    "streams": [
+      {
+        "codec_type": "video",
+        "width": 256,
+        "height": 256,
+        "duration": "5.166667",
+        "nb_frames": "124"
+      },
+      {
+        "codec_type": "audio",
+        "duration": "5.166656",
+        "nb_frames": "163"
+      }
+    ],
+    "audio_finite": true,
+    "audio_rms": 0.031031077727675438
+  },
+  {
+    "case": "A",
+    "file": "video_p08_r03.mp4",
+    "streams": [
+      {
+        "codec_type": "video",
+        "width": 256,
+        "height": 256,
+        "duration": "5.166667",
+        "nb_frames": "124"
+      },
+      {
+        "codec_type": "audio",
+        "duration": "5.166656",
+        "nb_frames": "163"
+      }
+    ],
+    "audio_finite": true,
+    "audio_rms": 0.042214419692754745
+  },
+  {
+    "case": "B",
+    "file": "video_p08_r00.mp4",
+    "streams": [
+      {
+        "codec_type": "video",
+        "width": 256,
+        "height": 256,
+        "duration": "5.166667",
+        "nb_frames": "124"
+      },
+      {
+        "codec_type": "audio",
+        "duration": "5.166656",
+        "nb_frames": "163"
+      }
+    ],
+    "audio_finite": true,
+    "audio_rms": 0.05296551436185837
+  },
+  {
+    "case": "B",
+    "file": "video_p08_r01.mp4",
+    "streams": [
+      {
+        "codec_type": "video",
+        "width": 256,
+        "height": 256,
+        "duration": "5.166667",
+        "nb_frames": "124"
+      },
+      {
+        "codec_type": "audio",
+        "duration": "5.166656",
+        "nb_frames": "163"
+      }
+    ],
+    "audio_finite": true,
+    "audio_rms": 0.047485075891017914
+  },
+  {
+    "case": "B",
+    "file": "video_p08_r02.mp4",
+    "streams": [
+      {
+        "codec_type": "video",
+        "width": 256,
+        "height": 256,
+        "duration": "5.166667",
+        "nb_frames": "124"
+      },
+      {
+        "codec_type": "audio",
+        "duration": "5.166656",
+        "nb_frames": "163"
+      }
+    ],
+    "audio_finite": true,
+    "audio_rms": 0.054652005434036255
+  },
+  {
+    "case": "B",
+    "file": "video_p08_r03.mp4",
+    "streams": [
+      {
+        "codec_type": "video",
+        "width": 256,
+        "height": 256,
+        "duration": "5.166667",
+        "nb_frames": "124"
+      },
+      {
+        "codec_type": "audio",
+        "duration": "5.166656",
+        "nb_frames": "163"
+      }
+    ],
+    "audio_finite": true,
+    "audio_rms": 0.0526139922440052
+  },
+  {
+    "case": "C",
+    "file": "video_p08_r00.mp4",
+    "streams": [
+      {
+        "codec_type": "video",
+        "width": 256,
+        "height": 256,
+        "duration": "5.166667",
+        "nb_frames": "124"
+      },
+      {
+        "codec_type": "audio",
+        "duration": "5.166656",
+        "nb_frames": "163"
+      }
+    ],
+    "audio_finite": true,
+    "audio_rms": 0.048177171498537064
+  },
+  {
+    "case": "C",
+    "file": "video_p08_r01.mp4",
+    "streams": [
+      {
+        "codec_type": "video",
+        "width": 256,
+        "height": 256,
+        "duration": "5.166667",
+        "nb_frames": "124"
+      },
+      {
+        "codec_type": "audio",
+        "duration": "5.166656",
+        "nb_frames": "163"
+      }
+    ],
+    "audio_finite": true,
+    "audio_rms": 0.050952594727277756
+  },
+  {
+    "case": "C",
+    "file": "video_p08_r02.mp4",
+    "streams": [
+      {
+        "codec_type": "video",
+        "width": 256,
+        "height": 256,
+        "duration": "5.166667",
+        "nb_frames": "124"
+      },
+      {
+        "codec_type": "audio",
+        "duration": "5.166656",
+        "nb_frames": "163"
+      }
+    ],
+    "audio_finite": true,
+    "audio_rms": 0.050952594727277756
+  },
+  {
+    "case": "C",
+    "file": "video_p08_r03.mp4",
+    "streams": [
+      {
+        "codec_type": "video",
+        "width": 256,
+        "height": 256,
+        "duration": "5.166667",
+        "nb_frames": "124"
+      },
+      {
+        "codec_type": "audio",
+        "duration": "5.166656",
+        "nb_frames": "163"
+      }
+    ],
+    "audio_finite": true,
+    "audio_rms": 0.048177171498537064
+  }
+]

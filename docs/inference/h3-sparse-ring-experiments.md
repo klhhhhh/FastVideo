@@ -4,6 +4,10 @@ This workflow implements the four-phase H3 placement plan. Offline results and
 real runtime measurements are separate artifacts. A CPU process group or a
 single GPU does not establish multi-GPU speedup.
 
+The [two-A6000 report and execution record](../reports/h3/2026-10-28-a6000/REPORT.md)
+include real-mask capture provenance, exact experiment commands, performance
+results and the unresolved model-output reproducibility check.
+
 ## Capture a new real-mask dataset
 
 When the original trace is unavailable, `scripts/analysis/h3_loadbalance/run_h3_experiment.py`
