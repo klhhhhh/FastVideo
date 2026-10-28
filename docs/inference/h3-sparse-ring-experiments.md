@@ -4,6 +4,50 @@ This workflow implements the four-phase H3 placement plan. Offline results and
 real runtime measurements are separate artifacts. A CPU process group or a
 single GPU does not establish multi-GPU speedup.
 
+## Capture a new real-mask dataset
+
+When the original trace is unavailable, `scripts/analysis/h3_loadbalance/run_h3_experiment.py`
+can capture the final selector masks from real two-GPU H3 inference. It runs pure
+Ring with all 56 global heads, checks identical mask hashes on both ranks, and
+writes one deduplicated rank-zero record per step/layer. These are new captures,
+not a reproduction of the unavailable original prompt set. Capture timings are
+not performance measurements.
+
+Prepare a JSON list of ten distinct text prompts (indices 0–7 train, 8–9 held out).
+The entry point fixes BF16, 256×256, 124 frames, 90% sparsity, 64-token tiles,
+exempt mode and five sigma points. Capture requires `--repeats 1`; use fresh
+output directories for independent capture runs. It verifies four actual transformer forwards
+and records both modalities' actual timesteps and sigmas. A merged VSA checkpoint
+can be used directly; this entry point does not attach a separate LoRA.
+
+```bash
+python scripts/analysis/h3_loadbalance/run_h3_experiment.py \
+  --model /path/to/VSA-trained-H3 --prompts /path/to/prompts.json \
+  --output outputs/h3-capture-pilot --conditioning outputs/h3-conditioning \
+  --capture --start 0 --count 1 --seed 1000
+python scripts/analysis/h3_loadbalance/prepare_trace.py \
+  --source outputs/h3-capture-pilot --output outputs/h3-trace-pilot --prompts 1
+```
+
+After the pilot validates, use a fresh capture output directory with `--count 10`
+and the same conditioning cache, then convert without `--prompts 1`. The converter
+rejects missing/duplicate records, mismatched heads, invalid token/tile mappings,
+rank disagreement, prefix-mask violations and cross-prompt geometry or schedule
+changes. It publishes `video_masks.npy`, `layout_XX.npz`, `provenance.json` and
+`source_manifest.json` only after every input validates. The existing planner
+still requires exactly ten prompts, four forwards, fifty layers, 56 heads and
+forty video tiles.
+
+The capture entry point uses one layerwise-offloaded real text encoder on rank
+zero, precomputes the prompt list, and broadcasts each prompt's conditioning.
+It explicitly disables DiT layerwise offload so FSDP remains enabled. Its
+process-local hooks leave the package implementation unchanged. For generation
+comparisons, omit `--capture`, pass `--start 8 --count 1 --repeats 4`, and optionally
+add `--layout ... --transport ring` or `demand`. Keep payload logging (`--metrics`)
+and profiling (`--profile`) in separate runs. The synchronized denoising-stage
+time includes lazy DiT loading; CUDA event spans for each transformer forward
+are recorded separately and include device communication waits.
+
 ## Phase 1–3: captured-mask experiments
 
 From the repository root, with NumPy, Matplotlib, PyTorch and pytest installed:
@@ -107,9 +151,26 @@ python examples/inference/basic/basic_minimax_h3_t2v.py \
   --model-path /path/to/VSA-trained-H3 \
   --attention-backend VIDEO_SPARSE_ATTN_H3 --num-gpus 2 --ring-size 2 \
   --prompt "A red panda walking through a forest" \
-  --height 256 --width 256 --num-frames 22 --steps 4 \
+  --height 256 --width 256 --num-frames 124 --steps 5 \
   --vsa-tile-size 64 --output outputs/h3-vsa-ring
 ```
+
+For the published four-forward checkpoint, use
+`FastVideo/FastVideo-FastH3-4-step-Preview-v1-VSA-DataFree` as `--model-path`
+and add `--vsa-sparsity 0.9`. Its `fastvideo_inference.json` provides the trained
+DMD ladder `[999, 749, 500, 250]`; `--steps 5` counts sigma-grid points,
+including terminal zero, and therefore runs four transformer forwards.
+The current input validator requires at least 124 aligned frames at 24 fps;
+the older 22-frame smoke command is rejected.
+
+On discrete GPUs with limited memory, add `--lazy-module-load --no-compile-vae`
+to release the text encoder before loading the sharded DiT, then release the
+DiT before decoding. This example enables FSDP for multiple GPUs; sequence
+sharding alone does not shard the model weights. Start with packed ownership
+and no fitted layout: policies from captured masks must match the new request's
+geometry. On Ampere GPUs, use the Triton sparse Ring path rather than the
+Blackwell `sm100a` kernel. Text-encoder loading and VAE decoding can have their
+own memory or dependency limits even when sparse attention itself fits.
 
 Use a VSA-trained checkpoint or an existing inference configuration with a
 trained VSA LoRA. The pipeline's guard against untrained, zero compression gates
