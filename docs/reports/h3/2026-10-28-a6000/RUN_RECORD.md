@@ -132,6 +132,12 @@ python -m torch.distributed.run --standalone --nproc_per_node=2 \
 
 它只对固定合成输入重复实际 `pooled_tiles`，并对比 deterministic algorithms 关闭/开启；不验证确定性全模型，也不产生模型加速结论。
 
+## 补充归档的精确证据
+
+历史 argv 已收入 [commands.json](commands.json)，全部实际配置收入 [run_configs.json](run_configs.json)。[as_run/](as_run/) 保留实际 performance/capture/converter/pilot 源码及每次每 rank 的测量；源码 SHA256 与当时配置逐一核对。Pilot 源码由已记录版本差异重建，并与原 `source_sha256` 匹配，不将修复后的代码冒充原始代码。
+
+模型 revision/ETag、完整导出声明和硬件驱动也已补入 Git，见 [归档完整性核对](ARCHIVE_CHECK.md)。原始大数据仍需另外迁移。
+
 ## 本轮提交前复核
 
 ```bash

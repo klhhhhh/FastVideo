@@ -1,0 +1,284 @@
+{
+  "A": {
+    "argv": [
+      "python",
+      "scripts/analysis/h3_loadbalance/run_h3_experiment.py",
+      "--model",
+      "/tmp/h3-a6000-full/model",
+      "--prompts",
+      "outputs/h3-new-trace/prompts.json",
+      "--conditioning",
+      "outputs/h3-new-trace/conditioning",
+      "--start",
+      "8",
+      "--count",
+      "1",
+      "--seed",
+      "1000",
+      "--output",
+      "/FastVideo/outputs/h3-abc-seed1000/A",
+      "--transport",
+      "ring",
+      "--repeats",
+      "4"
+    ],
+    "environment": {
+      "PYTHONPATH": "/tmp/h3-a6000-full/deps"
+    },
+    "cwd": "/FastVideo"
+  },
+  "B": {
+    "argv": [
+      "python",
+      "scripts/analysis/h3_loadbalance/run_h3_experiment.py",
+      "--model",
+      "/tmp/h3-a6000-full/model",
+      "--prompts",
+      "outputs/h3-new-trace/prompts.json",
+      "--conditioning",
+      "outputs/h3-new-trace/conditioning",
+      "--start",
+      "8",
+      "--count",
+      "1",
+      "--seed",
+      "1000",
+      "--output",
+      "/FastVideo/outputs/h3-abc-seed1000/B",
+      "--transport",
+      "ring",
+      "--repeats",
+      "4",
+      "--layout",
+      "outputs/h3-plan-2/runtime_layout.json"
+    ],
+    "environment": {
+      "PYTHONPATH": "/tmp/h3-a6000-full/deps"
+    },
+    "cwd": "/FastVideo"
+  },
+  "C": {
+    "argv": [
+      "python",
+      "scripts/analysis/h3_loadbalance/run_h3_experiment.py",
+      "--model",
+      "/tmp/h3-a6000-full/model",
+      "--prompts",
+      "outputs/h3-new-trace/prompts.json",
+      "--conditioning",
+      "outputs/h3-new-trace/conditioning",
+      "--start",
+      "8",
+      "--count",
+      "1",
+      "--seed",
+      "1000",
+      "--output",
+      "/FastVideo/outputs/h3-abc-seed1000/C",
+      "--transport",
+      "demand",
+      "--repeats",
+      "4",
+      "--layout",
+      "outputs/h3-plan-2/runtime_layout.json"
+    ],
+    "environment": {
+      "PYTHONPATH": "/tmp/h3-a6000-full/deps"
+    },
+    "cwd": "/FastVideo"
+  },
+  "A-observation": {
+    "argv": [
+      "python",
+      "outputs/h3-abc-seed1000/run_diagnostic.py",
+      "--model",
+      "/tmp/h3-a6000-full/model",
+      "--prompts",
+      "outputs/h3-new-trace/prompts.json",
+      "--conditioning",
+      "outputs/h3-new-trace/conditioning",
+      "--start",
+      "8",
+      "--count",
+      "1",
+      "--seed",
+      "1000",
+      "--output",
+      "/FastVideo/outputs/h3-abc-seed1000/A-observation",
+      "--transport",
+      "ring",
+      "--repeats",
+      "2",
+      "--metrics",
+      "/FastVideo/outputs/h3-abc-seed1000/A-observation/metrics",
+      "--capture"
+    ],
+    "environment": {
+      "PYTHONPATH": "/tmp/h3-a6000-full/deps"
+    },
+    "cwd": "/FastVideo",
+    "scope": "diagnostic only; not performance sample"
+  },
+  "B-observation": {
+    "argv": [
+      "python",
+      "outputs/h3-abc-seed1000/run_diagnostic.py",
+      "--model",
+      "/tmp/h3-a6000-full/model",
+      "--prompts",
+      "outputs/h3-new-trace/prompts.json",
+      "--conditioning",
+      "outputs/h3-new-trace/conditioning",
+      "--start",
+      "8",
+      "--count",
+      "1",
+      "--seed",
+      "1000",
+      "--output",
+      "/FastVideo/outputs/h3-abc-seed1000/B-observation",
+      "--transport",
+      "ring",
+      "--repeats",
+      "1",
+      "--layout",
+      "outputs/h3-plan-2/runtime_layout.json",
+      "--metrics",
+      "/FastVideo/outputs/h3-abc-seed1000/B-observation/metrics",
+      "--capture"
+    ],
+    "environment": {
+      "PYTHONPATH": "/tmp/h3-a6000-full/deps"
+    },
+    "cwd": "/FastVideo",
+    "scope": "diagnostic only; not performance sample"
+  },
+  "C-observation": {
+    "argv": [
+      "python",
+      "outputs/h3-abc-seed1000/run_diagnostic.py",
+      "--model",
+      "/tmp/h3-a6000-full/model",
+      "--prompts",
+      "outputs/h3-new-trace/prompts.json",
+      "--conditioning",
+      "outputs/h3-new-trace/conditioning",
+      "--start",
+      "8",
+      "--count",
+      "1",
+      "--seed",
+      "1000",
+      "--output",
+      "/FastVideo/outputs/h3-abc-seed1000/C-observation",
+      "--transport",
+      "demand",
+      "--repeats",
+      "1",
+      "--layout",
+      "outputs/h3-plan-2/runtime_layout.json",
+      "--metrics",
+      "/FastVideo/outputs/h3-abc-seed1000/C-observation/metrics",
+      "--capture"
+    ],
+    "environment": {
+      "PYTHONPATH": "/tmp/h3-a6000-full/deps"
+    },
+    "cwd": "/FastVideo",
+    "scope": "diagnostic only; not performance sample"
+  },
+  "A-profile": {
+    "argv": [
+      "python",
+      "scripts/analysis/h3_loadbalance/run_h3_experiment.py",
+      "--model",
+      "/tmp/h3-a6000-full/model",
+      "--prompts",
+      "outputs/h3-new-trace/prompts.json",
+      "--conditioning",
+      "outputs/h3-new-trace/conditioning",
+      "--start",
+      "8",
+      "--count",
+      "1",
+      "--seed",
+      "1000",
+      "--output",
+      "/FastVideo/outputs/h3-abc-seed1000/A-profile",
+      "--transport",
+      "ring",
+      "--repeats",
+      "1",
+      "--profile"
+    ],
+    "environment": {
+      "PYTHONPATH": "/tmp/h3-a6000-full/deps"
+    },
+    "cwd": "/FastVideo",
+    "scope": "diagnostic only; not performance sample"
+  },
+  "B-profile": {
+    "argv": [
+      "python",
+      "scripts/analysis/h3_loadbalance/run_h3_experiment.py",
+      "--model",
+      "/tmp/h3-a6000-full/model",
+      "--prompts",
+      "outputs/h3-new-trace/prompts.json",
+      "--conditioning",
+      "outputs/h3-new-trace/conditioning",
+      "--start",
+      "8",
+      "--count",
+      "1",
+      "--seed",
+      "1000",
+      "--output",
+      "/FastVideo/outputs/h3-abc-seed1000/B-profile",
+      "--transport",
+      "ring",
+      "--repeats",
+      "1",
+      "--layout",
+      "outputs/h3-plan-2/runtime_layout.json",
+      "--profile"
+    ],
+    "environment": {
+      "PYTHONPATH": "/tmp/h3-a6000-full/deps"
+    },
+    "cwd": "/FastVideo",
+    "scope": "diagnostic only; not performance sample"
+  },
+  "C-profile": {
+    "argv": [
+      "python",
+      "scripts/analysis/h3_loadbalance/run_h3_experiment.py",
+      "--model",
+      "/tmp/h3-a6000-full/model",
+      "--prompts",
+      "outputs/h3-new-trace/prompts.json",
+      "--conditioning",
+      "outputs/h3-new-trace/conditioning",
+      "--start",
+      "8",
+      "--count",
+      "1",
+      "--seed",
+      "1000",
+      "--output",
+      "/FastVideo/outputs/h3-abc-seed1000/C-profile",
+      "--transport",
+      "demand",
+      "--repeats",
+      "1",
+      "--layout",
+      "outputs/h3-plan-2/runtime_layout.json",
+      "--profile"
+    ],
+    "environment": {
+      "PYTHONPATH": "/tmp/h3-a6000-full/deps"
+    },
+    "cwd": "/FastVideo",
+    "scope": "diagnostic only; not performance sample"
+  }
+}

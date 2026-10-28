@@ -1,0 +1,19 @@
+{
+  "gpus": [
+    {
+      "index": "0",
+      "name": "NVIDIA RTX A6000",
+      "pci.bus_id": "00000000:4F:00.0",
+      "driver_version": "595.91.07",
+      "memory.total [MiB]": "46068 MiB"
+    },
+    {
+      "index": "1",
+      "name": "NVIDIA RTX A6000",
+      "pci.bus_id": "00000000:D5:00.0",
+      "driver_version": "595.91.07",
+      "memory.total [MiB]": "46068 MiB"
+    }
+  ],
+  "topology": "\tGPU0\tGPU1\tNIC0\tNIC1\tCPU Affinity\tNUMA Affinity\tGPU NUMA ID\nGPU0\t X \tSYS\tSYS\tSYS\t0-23,48-71\t0\t\tN/A\nGPU1\tSYS\t X \tNODE\tNODE\t24-47,72-95\t1\t\tN/A\nNIC0\tSYS\tNODE\t X \tPIX\t\t\t\t\nNIC1\tSYS\tNODE\tPIX\t X \t\t\t\t\n\nLegend:\n\n  X    = Self\n  SYS  = Connection traversing PCIe as well as the SMP interconnect between NUMA nodes (e.g., QPI/UPI)\n  NODE = Connection traversing PCIe as well as the interconnect between PCIe Host Bridges within a NUMA node\n  PHB  = Connection traversing PCIe as well as a PCIe Host Bridge (typically the CPU)\n  PXB  = Connection traversing multiple PCIe bridges (without traversing the PCIe Host Bridge)\n  PIX  = Connection traversing at most a single PCIe bridge\n  NV#  = Connection traversing a bonded set of # NVLinks\n\nNIC Legend:\n\n  NIC0: rocep177s0f0\n  NIC1: rocep177s0f1\n\n"
+}

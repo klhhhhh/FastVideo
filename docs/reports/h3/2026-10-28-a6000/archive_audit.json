@@ -1,0 +1,54 @@
+{
+  "scope": "Archive completeness and integrity check, not a new performance/model-parity experiment",
+  "dataset": {
+    "prompts": 10,
+    "train": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "held_out": [
+      8,
+      9
+    ],
+    "shape": [
+      10,
+      4,
+      50,
+      56,
+      40,
+      40
+    ],
+    "real_mask_records": 2000
+  },
+  "runs": {
+    "performance_cases": [
+      "A",
+      "B",
+      "C"
+    ],
+    "repeats_per_case": 4,
+    "independent_observations": 3,
+    "independent_profiles": 3,
+    "baseline_diagnostic_repeats": 2
+  },
+  "checks": {
+    "original_source_artifact_hashes_verified": 9,
+    "performance_source_matches_all_three_configs": true,
+    "capture_source_matches_recorded_config": true,
+    "converter_source_matches_trace_provenance": true,
+    "diagnostic_source_matches_recorded_config": true,
+    "pilot_source_reconstructed_and_hash_verified": true
+  },
+  "limitations": [
+    "Raw media/tensors/profiles stay in ignored outputs; not available from git clone alone",
+    "Weight content digest is export-declared; local HF revisions/ETags recorded, not an independent whole-weight rehash",
+    "environment.json is a post-run interpreter snapshot; no complete per-worker environment or wheel hash lockfile was captured",
+    "Strict full-model reproducibility failed; deterministic full-model acceptance was not run"
+  ]
+}

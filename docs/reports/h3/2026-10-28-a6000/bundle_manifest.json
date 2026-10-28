@@ -1,13 +1,108 @@
 [
   {
+    "path": "ARCHIVE_CHECK.md",
+    "bytes": 2696,
+    "sha256": "e6e8cff5c14a689eb3a268d76e0b6bb95d7d3282bcbab750f9a65db400cbe9d2"
+  },
+  {
     "path": "REPORT.md",
-    "bytes": 8442,
-    "sha256": "82304c6c51143604ab4f907fae1b0515c054ed1b49c6123117a4fd5c4ac4716d"
+    "bytes": 8753,
+    "sha256": "481a5c760b0ea9aed94c3c12f6737de2f04d9dbd653ee6b63d024815654a7a7a"
   },
   {
     "path": "RUN_RECORD.md",
-    "bytes": 9638,
-    "sha256": "e98fd2acef105ee1cdc4f440fbcda145c3b0ff347adc442fadd6e32545300d8a"
+    "bytes": 10225,
+    "sha256": "e58a2aed41c0b0867be3d9129e0a125b04b7573218343dfe42df38e020f05883"
+  },
+  {
+    "path": "archive_audit.json",
+    "bytes": 1417,
+    "sha256": "6d5bab496f629fc823e12b1efb4447747f6dcdb21b61e5e4382acf589ca153c2"
+  },
+  {
+    "path": "as_run/A-observation_measurements_rank_0.jsonl",
+    "bytes": 2025,
+    "sha256": "8fb934d06459a6e5afd0ae32d874b9c928c4aa45f7d8b7219fee027bcb856d09"
+  },
+  {
+    "path": "as_run/A-observation_measurements_rank_1.jsonl",
+    "bytes": 2040,
+    "sha256": "4579757a5bf3bb7453abcdec113a9c373a0fdc4c1f34e77a6cfe65895d379a3e"
+  },
+  {
+    "path": "as_run/A_measurements_rank_0.jsonl",
+    "bytes": 2343,
+    "sha256": "4631209cc56f2828d98a45d750018d0dfe1732621e2f1b73ededc9c13da1ffa2"
+  },
+  {
+    "path": "as_run/A_measurements_rank_1.jsonl",
+    "bytes": 2344,
+    "sha256": "3efb7df50008ae7f437282766c6f034f41f90ba9a24a9b0c61e64552c3d1ae5f"
+  },
+  {
+    "path": "as_run/B-observation_measurements_rank_0.jsonl",
+    "bytes": 1013,
+    "sha256": "927e48c67638bfc05733f707e7b996fb7ca252d8685fed4121e4fec274aeb68e"
+  },
+  {
+    "path": "as_run/B-observation_measurements_rank_1.jsonl",
+    "bytes": 1017,
+    "sha256": "ef68ffe2a09354bb4cfaaa5add2151f2ff640f93c27c20568c557c89d45b70d4"
+  },
+  {
+    "path": "as_run/B_measurements_rank_0.jsonl",
+    "bytes": 2324,
+    "sha256": "c0c15218ac2ca2b410a4653d2277f0a18ebf9b0eb1e48a253f35811d53122f90"
+  },
+  {
+    "path": "as_run/B_measurements_rank_1.jsonl",
+    "bytes": 2321,
+    "sha256": "c3e7296324637d79fdb2b29aec164823609e57b8333ac0b8b299ed7bf54c81a1"
+  },
+  {
+    "path": "as_run/C-observation_measurements_rank_0.jsonl",
+    "bytes": 1016,
+    "sha256": "6b40a60af2bc2e24af6b54e28eb9eb4be3eeb259ef49b601f8f67de8db041437"
+  },
+  {
+    "path": "as_run/C-observation_measurements_rank_1.jsonl",
+    "bytes": 1019,
+    "sha256": "928b7a6214f24164e06247700424db51102bb2932a26395473c45eb2923e5c3c"
+  },
+  {
+    "path": "as_run/C_measurements_rank_0.jsonl",
+    "bytes": 2315,
+    "sha256": "280e44a1483e3c9365a0ecb6eb8e12a0e483c49404e6debdd0396da865b382a7"
+  },
+  {
+    "path": "as_run/C_measurements_rank_1.jsonl",
+    "bytes": 2327,
+    "sha256": "1b20e5c17370b2cdba4e64a9159b19ea531ae30412dcb26a32923444b18f96f2"
+  },
+  {
+    "path": "as_run/capture_runner.py.snapshot",
+    "bytes": 14770,
+    "sha256": "1e9c8bb9c70e9ebf87ea02b40607b27eeb01bbe4528cd00ac9ef5793a3455d36"
+  },
+  {
+    "path": "as_run/converter.py.snapshot",
+    "bytes": 8873,
+    "sha256": "d215c0812b8e682df010690e72dab0de8511de0c41b65011965a860649668d6b"
+  },
+  {
+    "path": "as_run/performance_runner.py.snapshot",
+    "bytes": 15441,
+    "sha256": "06268a9ce53ef8a03eddafd62e0e6684866cf5911d9d09921eeaf71ed80005f6"
+  },
+  {
+    "path": "as_run/pilot_runner.py.snapshot",
+    "bytes": 14787,
+    "sha256": "a4f44ac5163b6ebf2b2b2ff39ab6d67dc42c8939ab3be823bf9614cfa59d90f7"
+  },
+  {
+    "path": "commands.json",
+    "bytes": 6636,
+    "sha256": "6416f2e6c7770024455a3ed5243649b32af05044beff83e4318f3fd77a1135dc"
   },
   {
     "path": "comparison.csv",
@@ -25,6 +120,11 @@
     "sha256": "bbfd612bc51ab9b31941a0e022faaa8637d7b3f77b3b92fea25b2e37f78e29a7"
   },
   {
+    "path": "hardware.json",
+    "bytes": 1249,
+    "sha256": "690cb051ef31f36d429873fd0c1f55a61a593964c032cee3cb318b5a8b8792b9"
+  },
+  {
     "path": "media_sanity.json",
     "bytes": 4858,
     "sha256": "9f47aaeaf823fd2966efcc08931596bc4a1bf5ec65c698caf0058b880e362be9"
@@ -38,6 +138,11 @@
     "path": "microbenchmark_summary.json",
     "bytes": 3306,
     "sha256": "a41fa943147a4b88405d2cdeaac375854a02db17f0f1f00dc85363314d93838d"
+  },
+  {
+    "path": "model_identity.json",
+    "bytes": 15838,
+    "sha256": "c1a04a1da6d8b1786e684a57418d8a74e6508a0db7c5b779aeba415743b459b0"
   },
   {
     "path": "ownership_analysis.json",
@@ -88,6 +193,11 @@
     "path": "repeat_diagnostic.py.snapshot",
     "bytes": 16330,
     "sha256": "550888b02914832734b6bf4f8917fb70b4e788ac1b334e391112fad42ae414f5"
+  },
+  {
+    "path": "run_configs.json",
+    "bytes": 48779,
+    "sha256": "6d03f39db4a47316bdda8c4de77a92c3d7c3987e3bd66fc3afa4c084b5e0207e"
   },
   {
     "path": "selected_static_layout.json",

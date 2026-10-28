@@ -59,11 +59,14 @@ A = Naive Ring；B = 拟合静态 Ring；C = 同布局 Demand。
 
 ## 归档与本机原始结果
 
+[归档完整性核对](ARCHIVE_CHECK.md) 列出了已记录项目、源码哈希验证和仍未采集/未验收的边界。
+
 本目录保存可提交的精简报告与 CSV/JSON 证据。视频、原始 packed masks、完整 NPY/NPZ、运行日志和大型 profiler trace 保留在被 Git 忽略的 `outputs/`，不会随 clone 分发。
 
 - [性能表](comparison.csv)、[完整性能与差异](comparison.json)、[逐对 latent 差异](pairwise_latent_consistency.json)。
 - [Microbenchmark](microbenchmark_summary.json)、[通信 payload](payload_summary.json)、[owner 分布](ownership_analysis.json)、[profiler 汇总](profiler_summary.json)。
 - [A 重复诊断](repeat_diagnostic.json)、[pooling 控制](pooling_reproducibility.json)、[音视频基本检查](media_sanity.json)。
+- [模型身份](model_identity.json)、[硬件/驱动](hardware.json)、[实际配置](run_configs.json)、[精确命令](commands.json)、[原始小测量与源码快照](as_run/)。
 - [环境](environment.json)、[十条 prompt](prompts.json)、[trace provenance](trace_provenance.json)、[训练侧选择](phase1_selection.json)。
 - [静态布局摘录](selected_static_layout.json) 去除了本轮未使用的 adaptive schedules；原始完整布局的哈希见 [源文件清单](source_artifacts.json)。
 - [执行记录与近期 commit 功能](RUN_RECORD.md)；[trace 采集操作说明](../../../inference/h3-sparse-ring-experiments.md)。
