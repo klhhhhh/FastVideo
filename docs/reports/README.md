@@ -1,9 +1,9 @@
 # Experiment reports
 
-Store reviewed, compact experiment reports and supporting CSV/JSON here. Keep
-model weights, raw tensors, generated media and large profiler traces under
-ignored `outputs/`; describe their location and retain source hashes in each
-report bundle. Record failed checks and measurement limits alongside results.
+Keep concise experiment conclusions, essential settings and small result tables
+here. Record failed checks and measurement limits alongside results. Store
+verbose configs, logs, source snapshots, raw tensors, generated media and
+profiler traces in separate experiment artifacts rather than this directory.
 
 | Report | Result |
 | --- | --- |

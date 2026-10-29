@@ -6,7 +6,7 @@
 ## 数据与运行配置
 
 - 硬件：2 × RTX A6000，跨 NUMA PCIe，无 NVLink；实际采用 FSDP 分片 DiT。
-- 模型：`FastVideo/FastVideo-FastH3-4-step-Preview-v1-VSA-DataFree` 官方合并导出，step 1300；未另挂 LoRA。完整模型声明/provenance 已嵌入各组 `run_config.json`。
+- 模型：`FastVideo/FastVideo-FastH3-4-step-Preview-v1-VSA-DataFree` 官方合并导出，step 1300；未另挂 LoRA。
 - 这是重新采集的数据：十条新 prompt，0–7 拟合布局，8–9 held-out；不是缺失的原始 trace 的逐样本复现。
 - BF16，256×256，124 帧、24 fps，seed 1000，VSA sparsity 0.9、64-token tile、exempt；无 dense override。
 - 实际四次 transformer forward：DMD rungs `[999,749,500,250]`，五个 sigma 网格点。两种模态实际 sigma/timestep 均保存并核对相同。
@@ -57,30 +57,14 @@ A = Naive Ring；B = 拟合静态 Ring；C = 同布局 Demand。
 独立固定-input pooling 控制：BF16 默认模式 12/12 次结果发生约 2.98e-8 的变化，确定性算法模式为 0/12；FP32 控制也复现同类现象。这证实当前 pooling 具有数值非确定性，与实际 score 漂移吻合，**未证明它是全部漂移的唯一来源，也没有用确定性全模型重新验收**。
 当前核心 attention/model 实现未被修改，性能表反映上述原生行为。下一轮应先固定 pooling/selector 可复现性，再验证模型级 policy parity；布局目标还需计入 FFN/token 偏斜及实际 all-head transport，暂不据此扩展到四卡。
 
-## 归档与本机原始结果
+## 结果与复现入口
 
-[归档完整性核对](ARCHIVE_CHECK.md) 列出了已记录项目、源码哈希验证和仍未采集/未验收的边界。
+[性能 CSV](comparison.csv) 保留完整精度的 A/B/C 汇总。采集、布局生成和推理命令见
+[实验运行指南](../../../inference/h3-sparse-ring-experiments.md)。CSV 中的 denoising stage 包含
+DiT 加载；峰值 allocated 的单位为 MiB，不能与表中的 GiB 混用。
 
-本目录保存可提交的精简报告与 CSV/JSON 证据。视频、原始 packed masks、完整 NPY/NPZ、运行日志和大型 profiler trace 保留在被 Git 忽略的 `outputs/`，不会随 clone 分发。
-
-- [性能表](comparison.csv)、[完整性能与差异](comparison.json)、[逐对 latent 差异](pairwise_latent_consistency.json)。
-- [Microbenchmark](microbenchmark_summary.json)、[通信 payload](payload_summary.json)、[owner 分布](ownership_analysis.json)、[profiler 汇总](profiler_summary.json)。
-- [A 重复诊断](repeat_diagnostic.json)、[pooling 控制](pooling_reproducibility.json)、[音视频基本检查](media_sanity.json)。
-- [模型身份](model_identity.json)、[硬件/驱动](hardware.json)、[实际配置](run_configs.json)、[精确命令](commands.json)、[原始小测量与源码快照](as_run/)。
-- [环境](environment.json)、[十条 prompt](prompts.json)、[trace provenance](trace_provenance.json)、[训练侧选择](phase1_selection.json)。
-- [静态布局摘录](selected_static_layout.json) 去除了本轮未使用的 adaptive schedules；原始完整布局的哈希见 [源文件清单](source_artifacts.json)。
-- [执行记录与近期 commit 功能](RUN_RECORD.md)；[trace 采集操作说明](../../../inference/h3-sparse-ring-experiments.md)。
-
-本机原始结果位置（其他 checkout 不保证存在）：
-
-- `outputs/h3-abc-seed1000/`：A/B/C 视频、日志、latent、独立观测及每 rank profiler trace。
-- `outputs/h3-new-trace/converted/`：完整新 trace；`raw/`：packed masks；精确采集/转换代码快照也保留在该父目录。
-- `outputs/h3-plan-2/`：完整 fitted layout、离线 CSV、provenance 和 HTML 报告。
-- `outputs/h3-ring-smoke-2gpu/`、`outputs/h3-ring-bench-2gpu/`、`outputs/h3-ring-bench-p*`：两卡 oracle 与 microbenchmark 原始结果。
-
-模型位于 `/tmp/h3-a6000-full/model`，推理依赖 overlay 位于 `/tmp/h3-a6000-full/deps`，分析依赖位于 `/tmp/h3-analysis-deps`。这些本机依赖与模型未收入 Git。复现需重新准备模型/环境，并为每次运行选择新的输出目录。
-
-## 检查
-
-本地布局/通信/转换正确性测试：56 passed。转换器后续暴露 CLI 形状参数后，8 项转换测试复测通过。pre-commit 与 git diff --check 通过；脚本和 local tests 的 lint 排除遵守仓库配置，没有绕过。
-全部实验进程已退出，两张 GPU 显存占用恢复为零。本目录提供 Git 可追踪归档；原始大文件未收入 Git，未上传外部服务。
+本目录只保留关键结论和结果表。详细配置、测量记录与源码快照可从 Git 提交
+`ebe7cbedc6a8b2e47f0c5cb041f9d446e6ccb8c4` 的同一路径恢复。
+原始视频、mask 和 profiler trace 未收入 Git；采集机器上的结果位于
+`outputs/h3-abc-seed1000/`、`outputs/h3-new-trace/` 和 `outputs/h3-plan-2/`，
+其他 checkout 不保证存在。本文记录的是历史测量，未解决的输出一致性问题仍需重新验收。
